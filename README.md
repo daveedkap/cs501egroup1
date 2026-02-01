@@ -37,10 +37,10 @@ This project demonstrates the differences between declarative and imperative UI 
 
 ## README Questions
 
-### 1. What makes Compose declarative?
+### 1. What makes Compose declarative? (David)
 *[Answer to be filled in]*
 
-### 2. Where is state stored?
+### 2. Where is state stored? (David)
 *[Answer to be filled in]*
 
 ### 3. Which composables are stateful vs stateless?
