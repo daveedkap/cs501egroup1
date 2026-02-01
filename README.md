@@ -37,11 +37,11 @@ This project demonstrates the differences between declarative and imperative UI 
 
 ## README Questions
 
-### 1. What makes Compose declarative? (David)
-*[Answer to be filled in]*
+### 1. What makes Compose declarative?
+Compose is declarative because you describe what the UI should look like based on the current state, rather than manually updating individual views. When state changes, Compose automatically recomposes only the affected parts of the UI. You don't write imperative code like `textView.setText()` or `button.setOnClickListener()` - instead, you declare the UI structure and Compose handles the updates.
 
-### 2. Where is state stored? (David)
-*[Answer to be filled in]*
+### 2. Where is state stored?
+State is stored in the composable function using `remember { mutableStateOf(...) }`. In `DashboardScreen.kt`, state variables like `counter`, `isEnabled`, and `message` are stored within the composable's scope. The `remember` function ensures the state persists across recompositions, and `mutableStateOf` makes the state observable so Compose knows when to recompose.
 
 ### 3. Which composables are stateful vs stateless?
 *[Answer to be filled in]*
