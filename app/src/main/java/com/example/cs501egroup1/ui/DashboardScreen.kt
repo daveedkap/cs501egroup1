@@ -26,15 +26,9 @@ import com.example.cs501egroup1.ui.theme.CS501EGroup1Theme
  */
 @Composable
 fun DashboardScreen() {
-    // TODO: Add state management using remember { mutableStateOf(...) }
-    // You need at least one piece of state (Boolean, Int, or String)
-    // Example: var counter by remember { mutableStateOf(0) }
-    // Example: var isEnabled by remember { mutableStateOf(false) }
-    // Example: var message by remember { mutableStateOf("Initial") }
-    
-    // Placeholder state - REPLACE THIS with your own state
     var counter by remember { mutableStateOf(0) }
     var isEnabled by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf("Welcome to the Dashboard") }
     
     Column(
         modifier = Modifier
@@ -43,7 +37,6 @@ fun DashboardScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // TODO: Add title Text composable
         Text(
             text = "Interactive Dashboard",
             style = MaterialTheme.typography.headlineMedium
@@ -51,31 +44,51 @@ fun DashboardScreen() {
         
         Spacer(modifier = Modifier.height(8.dp))
         
-        // TODO: Add dynamic text that shows current state value
-        // This text should automatically update when state changes
         Text(
-            text = "Counter: $counter | Enabled: $isEnabled",
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
+        
+        Text(
+            text = "Counter: $counter | Status: ${if (isEnabled) "Active" else "Inactive"}",
             style = MaterialTheme.typography.bodyLarge
         )
         
-        // TODO: Add Button or Switch that changes state
-        // Example: Button(onClick = { counter++ }) { Text("Increment") }
         Switch(
             checked = isEnabled,
-            onCheckedChange = { isEnabled = it }
+            onCheckedChange = { 
+                isEnabled = it
+                message = if (it) "Dashboard is now active!" else "Dashboard is inactive"
+            }
         )
         
-        Button(onClick = { counter++ }) {
-            Text("Increment Counter")
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = { 
+                counter++
+                message = "Counter incremented to $counter"
+            }) {
+                Text("Increment")
+            }
+            
+            Button(onClick = { 
+                counter = 0
+                message = "Counter reset"
+            }) {
+                Text("Reset")
+            }
         }
         
-        // TODO: Call stateless child composables from CustomComposables.kt
-        // Pass state as parameters and lambda callbacks for state changes
-        // Example: CustomCounterButton(count = counter, onCountChange = { counter = it })
         CustomInfoCard(
-            title = "Status",
+            title = "Dashboard Status",
             value = if (isEnabled) "Active" else "Inactive",
-            onAction = { isEnabled = !isEnabled }
+            onAction = { 
+                isEnabled = !isEnabled
+                message = if (isEnabled) "Status toggled to Active" else "Status toggled to Inactive"
+            }
         )
     }
 }
