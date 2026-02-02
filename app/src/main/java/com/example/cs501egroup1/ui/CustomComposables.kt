@@ -11,38 +11,77 @@ import com.example.cs501egroup1.ui.theme.CS501EGroup1Theme
 
 /**
  * PART 2 - PARTHIV'S SECTION
- * 
- * TODO: Complete the stateless child composables
- * 
- * Requirements:
- * 1. Create at least one stateless composable that:
- *    - Receives state only via parameters
- *    - Emits UI (Text, Button, Switch, etc.)
- *    - Uses a lambda callback to notify the parent of changes
- * 2. Create at least one custom composable (can be a combination of basic composables)
- * 3. Ensure all composables are stateless (no internal state management)
- * 4. Add @Preview composables for testing
+ *
+ * Stateless child composables:
+ * - Receive state ONLY through parameters
+ * - Use callbacks (lambdas) to notify parent of changes
+ * - No remember { } or mutableStateOf here
  */
 
 /**
- * Example stateless composable structure:
- * 
- * @Composable
- * fun CustomCounterButton(
- *     count: Int,                    // State received via parameter
- *     onCountChange: (Int) -> Unit   // Callback to notify parent
- * ) {
- *     Button(onClick = { onCountChange(count + 1) }) {
- *         Text("Count: $count")
- *     }
- * }
+ * Stateless toggle component.
+ * Parent owns isEnabled, child just shows it and reports changes via onToggle.
  */
+@Composable
+fun CustomToggleSwitch(
+    isEnabled: Boolean,
+    onToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = "Status",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = if (isEnabled) "Active" else "Inactive",
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
 
-// TODO: Create your stateless child composables here
-// Example ideas:
-// - CustomToggleSwitch(isEnabled: Boolean, onToggle: (Boolean) -> Unit)
-// - CustomCounterDisplay(count: Int, onIncrement: () -> Unit, onDecrement: () -> Unit)
-// - CustomInfoCard(title: String, value: String, onAction: () -> Unit)
+        Switch(
+            checked = isEnabled,
+            onCheckedChange = onToggle
+        )
+    }
+}
+
+@Composable
+fun CustomCounterControls(
+    count: Int,
+    onIncrement: () -> Unit,
+    onReset: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Counter: $count",
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(onClick = onIncrement) {
+                Text("Increment")
+            }
+            OutlinedButton(onClick = onReset) {
+                Text("Reset")
+            }
+        }
+    }
+}
 
 @Composable
 fun CustomInfoCard(
@@ -51,32 +90,62 @@ fun CustomInfoCard(
     onAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Implement a custom composable that displays title and value
-    // and has a button that calls onAction
-    // This is a placeholder - replace with your implementation
     Card(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onAction) {
-                Text("Action")
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Button(onClick = onAction) {
+                    Text("Action")
+                }
             }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CustomToggleSwitchPreview() {
+    CS501EGroup1Theme {
+        Surface(modifier = Modifier.padding(16.dp)) {
+            CustomToggleSwitch(
+                isEnabled = true,
+                onToggle = { }
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CustomCounterControlsPreview() {
+    CS501EGroup1Theme {
+        Surface(modifier = Modifier.padding(16.dp)) {
+            CustomCounterControls(
+                count = 5,
+                onIncrement = { },
+                onReset = { }
+            )
         }
     }
 }
@@ -85,10 +154,12 @@ fun CustomInfoCard(
 @Composable
 fun CustomInfoCardPreview() {
     CS501EGroup1Theme {
-        CustomInfoCard(
-            title = "Sample Title",
-            value = "Sample Value",
-            onAction = { }
-        )
+        Surface(modifier = Modifier.padding(16.dp)) {
+            CustomInfoCard(
+                title = "Sample Title",
+                value = "Sample Value",
+                onAction = { }
+            )
+        }
     }
 }
